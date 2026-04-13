@@ -88,7 +88,13 @@ export const Experts: GlobalConfig = {
           required: true,
           validate: (value) => {
             if (!Array.isArray(value)) return true
-            const labels = value.map((item) => item.label?.toLowerCase()).filter(Boolean)
+            const labels = value
+              .map((item) => {
+                if (!item || typeof item !== 'object' || !('label' in item)) return null
+                const label = item.label
+                return typeof label === 'string' ? label.toLowerCase() : null
+              })
+              .filter((label): label is string => Boolean(label))
             if (labels.length !== new Set(labels).size) {
               return 'Não pode haver áreas de atuação com nomes repetidos.'
             }

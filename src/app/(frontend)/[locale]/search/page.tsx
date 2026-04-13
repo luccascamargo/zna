@@ -35,10 +35,16 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
 
   const regex = query ? new RegExp(toAccentInsensitive(query), 'i') : null
 
-  const [allPublications, allServices] = query
+  const [allPublications, allAreas] = query
     ? await Promise.all([
-        payload.find({ collection: 'publications', locale, depth: 1, limit: 500, pagination: false }),
-        payload.find({ collection: 'services', locale, depth: 1, limit: 500, pagination: false }),
+        payload.find({
+          collection: 'publications',
+          locale,
+          depth: 1,
+          limit: 500,
+          pagination: false,
+        }),
+        payload.find({ collection: 'areas', locale, depth: 1, limit: 500, pagination: false }),
       ])
     : [{ docs: [] }, { docs: [] }]
 
@@ -48,17 +54,15 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
       : [],
   }
 
-  const services = {
-    docs: regex
-      ? allServices.docs.filter((s) => regex.test(s.title))
-      : [],
+  const areas = {
+    docs: regex ? allAreas.docs.filter((s) => regex.test(s.title)) : [],
   }
 
-  const totalResults = publications.docs.length + services.docs.length
+  const totalResults = publications.docs.length + areas.docs.length
 
   return (
     <div>
-      <Navbar logo={settings.logo} />
+      <Navbar logo={settings.logo} logoDark={settings.logoDark} />
 
       <div className="max-w-4xl mx-auto px-4 py-12">
         <h1 className="text-2xl font-semibold text-[#202246] mb-2">
@@ -95,17 +99,19 @@ export default async function SearchPage({ params, searchParams }: SearchPagePro
           </section>
         )}
 
-        {services.docs.length > 0 && (
+        {areas.docs.length > 0 && (
           <section>
-            <h2 className="text-sm uppercase tracking-widest text-[#969696] mb-4">Serviços</h2>
+            <h2 className="text-sm uppercase tracking-widest text-[#969696] mb-4">
+              Áreas de atuação
+            </h2>
             <ul className="flex flex-col gap-3">
-              {services.docs.map((service) => (
-                <li key={service.id}>
+              {areas.docs.map((area) => (
+                <li key={area.id}>
                   <Link
-                    href={`/${locale}/areas-de-atuacao/${service.slug}`}
+                    href={`/${locale}/areas-de-atuacao/${area.slug}`}
                     className="block text-[#202246] hover:underline font-medium"
                   >
-                    {service.title}
+                    {area.title}
                   </Link>
                 </li>
               ))}

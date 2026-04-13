@@ -13,9 +13,16 @@ export const settings: GlobalConfig = {
           fields: [
             {
               name: 'logo',
+              label: 'Logo (versão clara)',
               type: 'upload',
               relationTo: 'media',
               required: true,
+            },
+            {
+              name: 'logoDark',
+              label: 'Logo (versão escura)',
+              type: 'upload',
+              relationTo: 'media',
             },
             {
               name: 'location',

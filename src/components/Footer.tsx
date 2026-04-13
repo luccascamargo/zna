@@ -19,10 +19,10 @@ export function Footer({ settings, locale }: FooterProps) {
   const logo = resolveMedia(settings.logo)
 
   return (
-    <footer className="bg-[#202246] pt-36 pb-8">
-      <Container>
+    <footer className="bg-[#202246] pt-20 lg:pt-36 pb-8">
+      <Container className="flex flex-col">
         {/* Addresses */}
-        <div className="flex flex-row gap-14 items-end mb-12 pb-12">
+        <div className="flex flex-row flex-wrap lg:flex-nowrap gap-6 lg:gap-14 items-end mb-12 order-2 lg:order-1">
           {settings.location && (
             <div className="min-w-57">
               <RichText
@@ -39,16 +39,22 @@ export function Footer({ settings, locale }: FooterProps) {
               />
             </div>
           )}
-          <div className="w-full h-px bg-secondary" />
+          <div className="w-full h-px bg-secondary hidden lg:flex" />
         </div>
 
         {/* Main row */}
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-12">
+        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-10 mb-12 order-1 lg:order-2">
           {/* Logo */}
           <div className="shrink-0">
             {logo?.url && (
               <Link href={`/${locale}`}>
-                <Image src={logo.url} alt={logo.alt} width={433} height={90} />
+                <Image
+                  src={logo.url}
+                  alt={logo.alt}
+                  width={433}
+                  height={90}
+                  className="w-55 lg:w-108.25 h-auto"
+                />
               </Link>
             )}
           </div>
@@ -225,7 +231,7 @@ export function Footer({ settings, locale }: FooterProps) {
         </div>
 
         {/* Selos + CTA */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-6 py-8 border-t border-white/10">
+        <div className="flex flex-col sm:flex-row items-start lg:items-center justify-between gap-6 py-8 order-3">
           <div className="flex items-center gap-4 flex-wrap justify-center sm:justify-start">
             {settings.selos?.map((selo, i) => {
               const seloMedia = resolveMedia(selo.logo)
@@ -246,7 +252,7 @@ export function Footer({ settings, locale }: FooterProps) {
         </div>
 
         {/* Bottom bar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 border-t border-white/10">
+        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-6 order-4">
           <p className="text-white/40 text-xs">
             ZNA, {new Date().getFullYear()}. Todos os direitos reservados.
           </p>

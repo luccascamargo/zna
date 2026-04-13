@@ -21,7 +21,7 @@ function GlobeIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-export default function LocaleSwitcher() {
+export default function LocaleSwitcher({ dark = true }: { dark?: boolean }) {
   const pathname = usePathname()
   const params = useParams()
   const router = useRouter()
@@ -38,7 +38,7 @@ export default function LocaleSwitcher() {
   }
 
   return (
-    <div className="relative flex items-center justify-center bg-white p-2 rounded-full text-black">
+    <div className={`relative flex items-center justify-center p-2 rounded-full ${dark ? 'bg-white text-black' : 'bg-primary text-primary-foreground'}`}>
       <GlobeIcon className="pointer-events-none" />
       <select
         value={currentLocale}

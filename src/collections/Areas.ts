@@ -13,8 +13,8 @@ function toSlug(value: string): string {
 export const Areas: CollectionConfig = {
   slug: 'areas',
   labels: {
-    singular: 'Área de Interesse',
-    plural: 'Áreas de Interesse',
+    singular: 'Área de Atuação',
+    plural: 'Áreas de Atuação',
   },
   admin: {
     useAsTitle: 'title',
@@ -39,6 +39,7 @@ export const Areas: CollectionConfig = {
       label: 'Slug',
       type: 'text',
       unique: true,
+      required: true,
       admin: {
         readOnly: true,
         position: 'sidebar',
@@ -50,6 +51,92 @@ export const Areas: CollectionConfig = {
           },
         ],
       },
+    },
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          name: 'hero',
+          label: 'Hero',
+          fields: [
+            {
+              name: 'subTitle',
+              label: 'Subtítulo',
+              type: 'text',
+              required: true,
+            },
+            {
+              name: 'description',
+              label: 'Descrição',
+              type: 'richText',
+              required: true,
+            },
+            {
+              name: 'image',
+              label: 'Imagem de destaque',
+              type: 'upload',
+              relationTo: 'media',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'contentSection',
+          label: 'Conteúdo',
+          fields: [
+            {
+              name: 'content',
+              label: 'Conteúdo',
+              type: 'richText',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'formSection',
+          label: 'Formulário',
+          fields: [
+            {
+              name: 'title',
+              label: 'Título',
+              type: 'richText',
+              required: true,
+            },
+            {
+              name: 'description',
+              label: 'Descrição',
+              type: 'textarea',
+              required: true,
+            },
+            {
+              name: 'buttonText',
+              label: 'Texto do botão',
+              type: 'text',
+              required: true,
+            },
+          ],
+        },
+        {
+          name: 'relations',
+          label: 'Relacionamentos',
+          fields: [
+            {
+              name: 'publications',
+              label: 'Publicações relacionadas',
+              type: 'relationship',
+              relationTo: 'publications',
+              hasMany: true,
+            },
+            {
+              name: 'experts',
+              label: 'Especialistas relacionados',
+              type: 'relationship',
+              relationTo: 'specialists',
+              hasMany: true,
+            },
+          ],
+        },
+      ],
     },
   ],
 }

@@ -16,7 +16,7 @@ interface ContactFormSectionProps {
 const inputClass =
   'w-full bg-transparent border border-[#D0D0D0] rounded-[12px] px-4 py-3.5 text-sm text-primary placeholder:text-[#969696] outline-none focus:border-primary transition-colors'
 
-export function ContactFormSection({ data, settings, areas }: ContactFormSectionProps) {
+export function ContactFormSection({ data, areas }: ContactFormSectionProps) {
   const [form, setForm] = useState({
     nome: '',
     email: '',
@@ -50,7 +50,7 @@ export function ContactFormSection({ data, settings, areas }: ContactFormSection
   }
 
   return (
-    <section className="pt-20 bg-[#F7F7F7] h-100">
+    <section className="pt-20 bg-[#F7F7F7] lg:h-100 h-auto pb-20 lg:pb-0">
       <Container>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-start">
           {/* Left */}

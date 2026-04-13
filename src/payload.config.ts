@@ -12,11 +12,11 @@ import { settings } from './globals/Settings'
 import { Areas } from './collections/Areas'
 import { Files } from './collections/Files'
 import { Publications } from './collections/Publications'
-import { Services } from './collections/Services'
+import { ExpertsCollection } from './collections/Experts'
 import { Contact } from './globals/Contact'
 import { ServiceGlobal } from './globals/Services'
 import { About } from './globals/About'
-import { Experts } from './globals/Experts'
+import { Experts as ExpertsGlobal } from './globals/Experts'
 import { Documents } from './globals/Documents'
 
 const filename = fileURLToPath(import.meta.url)
@@ -29,8 +29,8 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Services, Files, Areas, Publications],
-  globals: [Home, settings, Contact, ServiceGlobal, About, Experts, Documents],
+  collections: [Users, Media, Files, Areas, Publications, ExpertsCollection],
+  globals: [Home, settings, Contact, ServiceGlobal, About, ExpertsGlobal, Documents],
   localization: {
     defaultLocale: 'pt',
     locales: [

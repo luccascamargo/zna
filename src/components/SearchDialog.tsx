@@ -24,7 +24,7 @@ function SearchIcon(props: React.SVGProps<SVGSVGElement>) {
   )
 }
 
-export function SearchDialog() {
+export function SearchDialog({ dark = true }: { dark?: boolean }) {
   const [open, setOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [mounted, setMounted] = useState(false)
@@ -61,7 +61,7 @@ export function SearchDialog() {
       <button
         onClick={() => setOpen(true)}
         aria-label="Abrir busca"
-        className="flex bg-white p-2 rounded-full text-black items-center transition-opacity cursor-pointer"
+        className={`flex p-2 rounded-full items-center transition-opacity cursor-pointer ${dark ? 'bg-white text-black' : 'bg-primary text-primary-foreground'}`}
       >
         <SearchIcon />
       </button>

@@ -69,10 +69,10 @@ export interface Config {
   collections: {
     users: User;
     media: Media;
-    services: Service;
     files: File;
     areas: Area;
     publications: Publication;
+    specialists: Specialist;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -82,10 +82,10 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    services: ServicesSelect<false> | ServicesSelect<true>;
     files: FilesSelect<false> | FilesSelect<true>;
     areas: AreasSelect<false> | AreasSelect<true>;
     publications: PublicationsSelect<false> | PublicationsSelect<true>;
+    specialists: SpecialistsSelect<false> | SpecialistsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -186,92 +186,6 @@ export interface Media {
   focalY?: number | null;
 }
 /**
- * Lista de serviços oferecidos pela ZNA. (Areas de atuação)
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services".
- */
-export interface Service {
-  id: string;
-  /**
-   * Título do serviço. Também servirá como slug. (URL amigável)
-   */
-  title: string;
-  slug?: string | null;
-  hero: {
-    subTitle: string;
-    description: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    icon: string | Media;
-  };
-  Content: {
-    image: string | Media;
-    content: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-  };
-  FormSection: {
-    title: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    description: {
-      root: {
-        type: string;
-        children: {
-          type: any;
-          version: number;
-          [k: string]: unknown;
-        }[];
-        direction: ('ltr' | 'rtl') | null;
-        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-        indent: number;
-        version: number;
-      };
-      [k: string]: unknown;
-    };
-    buttonText: string;
-  };
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "files".
  */
@@ -298,7 +212,66 @@ export interface Area {
   id: string;
   icon: string | Media;
   title: string;
-  slug?: string | null;
+  slug: string;
+  hero: {
+    subTitle: string;
+    description: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    image: string | Media;
+  };
+  contentSection: {
+    content: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+  };
+  formSection: {
+    title: {
+      root: {
+        type: string;
+        children: {
+          type: any;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    description: string;
+    buttonText: string;
+  };
+  relations?: {
+    publications?: (string | Publication)[] | null;
+    experts?: (string | Specialist)[] | null;
+  };
   updatedAt: string;
   createdAt: string;
 }
@@ -326,6 +299,27 @@ export interface Publication {
     [k: string]: unknown;
   };
   type: string;
+  areas: (string | Area)[];
+  /**
+   * Gerado automaticamente a partir do título. Usado na URL final da publicação: /publicacoes/[slug]
+   */
+  slug: string;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "specialists".
+ */
+export interface Specialist {
+  id: string;
+  image: string | Media;
+  name: string;
+  description: string;
+  email: string;
+  instagram?: string | null;
+  linkedin?: string | null;
+  whatsapp?: string | null;
   areas: (string | Area)[];
   updatedAt: string;
   createdAt: string;
@@ -363,10 +357,6 @@ export interface PayloadLockedDocument {
         value: string | Media;
       } | null)
     | ({
-        relationTo: 'services';
-        value: string | Service;
-      } | null)
-    | ({
         relationTo: 'files';
         value: string | File;
       } | null)
@@ -377,6 +367,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'publications';
         value: string | Publication;
+      } | null)
+    | ({
+        relationTo: 'specialists';
+        value: string | Specialist;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -462,36 +456,6 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "services_select".
- */
-export interface ServicesSelect<T extends boolean = true> {
-  title?: T;
-  slug?: T;
-  hero?:
-    | T
-    | {
-        subTitle?: T;
-        description?: T;
-        icon?: T;
-      };
-  Content?:
-    | T
-    | {
-        image?: T;
-        content?: T;
-      };
-  FormSection?:
-    | T
-    | {
-        title?: T;
-        description?: T;
-        buttonText?: T;
-      };
-  updatedAt?: T;
-  createdAt?: T;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "files_select".
  */
 export interface FilesSelect<T extends boolean = true> {
@@ -516,6 +480,31 @@ export interface AreasSelect<T extends boolean = true> {
   icon?: T;
   title?: T;
   slug?: T;
+  hero?:
+    | T
+    | {
+        subTitle?: T;
+        description?: T;
+        image?: T;
+      };
+  contentSection?:
+    | T
+    | {
+        content?: T;
+      };
+  formSection?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        buttonText?: T;
+      };
+  relations?:
+    | T
+    | {
+        publications?: T;
+        experts?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
 }
@@ -528,6 +517,23 @@ export interface PublicationsSelect<T extends boolean = true> {
   imagem?: T;
   content?: T;
   type?: T;
+  areas?: T;
+  slug?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "specialists_select".
+ */
+export interface SpecialistsSelect<T extends boolean = true> {
+  image?: T;
+  name?: T;
+  description?: T;
+  email?: T;
+  instagram?: T;
+  linkedin?: T;
+  whatsapp?: T;
   areas?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -737,6 +743,7 @@ export interface Home {
 export interface Setting {
   id: string;
   logo: string | Media;
+  logoDark?: (string | null) | Media;
   location: {
     root: {
       type: string;
@@ -1349,6 +1356,7 @@ export interface HomeSelect<T extends boolean = true> {
  */
 export interface SettingsSelect<T extends boolean = true> {
   logo?: T;
+  logoDark?: T;
   location?: T;
   locationTwo?: T;
   instagram?: T;
